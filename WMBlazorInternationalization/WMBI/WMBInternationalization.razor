@@ -1,4 +1,4 @@
-<CascadingValue Value=this>
+<CascadingValue Name="CascadeWMBI" Value=this>
     @if (! hasError)
     {
         @if (isLoaded)
@@ -28,12 +28,17 @@
 
     [Inject]
     protected IWMBI TheWMBI { get; set; }
+
+    [Inject]
+    NavigationManager MyNavigationManager { get; set; }
     
     protected bool isLoaded = false;
     protected bool hasError = false;
 
     protected override void OnInitialized()
     {
+        TheWMBI.Start(MyNavigationManager.BaseUri);
+
         TheWMBI.SetCallback(() => {
             isLoaded = TheWMBI.IsLoaded();
             hasError = TheWMBI.HasError();

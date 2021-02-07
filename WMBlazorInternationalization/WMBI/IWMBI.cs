@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public interface IWMBI
 {
+    Task Start(string baseUri);
     Task SetLanguage(string lang);
     string GetTranslation(string key);
     string GetCurrentLang();

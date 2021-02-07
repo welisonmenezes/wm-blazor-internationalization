@@ -11,7 +11,7 @@ using Microsoft.JSInterop;
 public sealed class WMBIStrategy : IWMBI
 {
     private readonly IJSRuntime jsRuntime;
-    private readonly HttpClient httpClient;
+    private HttpClient httpClient;
     private Dictionary<string, string> translations;
     private Action callback;
     private bool isLoaded = false;
@@ -24,14 +24,13 @@ public sealed class WMBIStrategy : IWMBI
     private Task<IJSObjectReference> _module;
     private Task<IJSObjectReference> Module => _module ??= jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/WMBlazorInternationalization/wm-blazor.interntationalization.js").AsTask();
 
-    public WMBIStrategy(IJSRuntime jsRuntime, HttpClient httpClient)
+    public WMBIStrategy(IJSRuntime jsRuntime)
     {
         this.jsRuntime = jsRuntime;
-        this.httpClient = httpClient;
         this.translations = new Dictionary<string, string>();
     }
 
-    public async void Configure(
+    public void Configure(
         string defaultLanguage,
         string defaultFileName,
         string defaultFilePath,
@@ -41,6 +40,11 @@ public sealed class WMBIStrategy : IWMBI
         this.fileName = defaultFileName;
         this.filePath = defaultFilePath;
         this.storageType = defaultStorageType;
+    }
+
+    public async Task Start(string baseUri)
+    {
+        this.httpClient = new HttpClient { BaseAddress = new Uri(baseUri) };
         await StartDefaultLanguage();
     }
 

@@ -1,0 +1,58 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<h1>@WMBI.GetTranslation("FetchDataTitle")</h1>
+
+<p>@WMBI.GetTranslation("FetchDataDesc")</p>
+
+@if (forecasts == null)
+{
+    <p><em>@WMBI.GetTranslation("FetchDataLoading")</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@WMBI.GetTranslation("Date")</th>
+                <th>@WMBI.GetTranslation("Temperature") (C)</th>
+                <th>@WMBI.GetTranslation("Temperature") (F)</th>
+                <th>@WMBI.GetTranslation("Summary")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [CascadingParameter(Name = "CascadeWMBI")]
+    protected WMBInternationalization WMBI { get; set; }
+
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}

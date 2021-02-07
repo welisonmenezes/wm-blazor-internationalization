@@ -1,0 +1,1 @@
+# Blazor Internationalization [![NuGet Package](https://j.mp/2nZUe7M)](https://j.mp/2nbtArW)

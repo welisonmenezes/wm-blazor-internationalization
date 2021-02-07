@@ -1,0 +1,30 @@
+﻿@page "/"
+
+<h1>@WMBI.GetTranslation("HelloWorld")</h1>
+
+<p>@WMBI.GetTranslation("Wellcome")</p>
+
+<hr>
+
+<h4>@WMBI.GetTranslation("Language")</h4>
+<h5>@WMBI.GetTranslation("CurrentLang") <code>@WMBI.GetCurrentLang()</code></h5>
+
+<hr>
+<h2>@WMBI.GetTranslation("ExampleTitle")</h2>
+
+@if(@WMBI.GetCurrentLang() == "en")
+{
+    <img src="img/reino-unido.png">
+}
+
+@if(@WMBI.GetCurrentLang() == "pt")
+{
+    <img src="img/brasil.png">
+}
+
+<SurveyPrompt Title="@WMBI.GetTranslation("PromptTitle")" />
+
+@code {
+    [CascadingParameter(Name = "CascadeWMBI")]
+    protected WMBInternationalization WMBI { get; set; }
+}

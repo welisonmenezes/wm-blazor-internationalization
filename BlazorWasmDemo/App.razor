@@ -1,0 +1,20 @@
+﻿<WMBInternationalization>
+    <ChildContent>
+        <Router AppAssembly="@typeof(Program).Assembly">
+            <Found Context="routeData">
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            </Found>
+            <NotFound>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p>Sorry, there's nothing at this address.</p>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </ChildContent>
+    <ChildLoading>
+        <p>Loading your localization data.</p>
+    </ChildLoading>
+    <ChildError>
+        <p>An error was occurred while loading your localization.</p>
+    </ChildError>
+</WMBInternationalization>
