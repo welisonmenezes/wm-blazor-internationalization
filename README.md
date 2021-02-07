@@ -83,7 +83,7 @@ When parameters are `null`, the default values will be assumed.
 ## Setting up the translations
 
 Inside the `wwwroot` directory, create a folder called `i18ntext` and, inside that, create a json file for each language you want.
-That is importante to name this files as following:
+That is important to name this files as following:
 
 `Locale.[language-code].json`
 
@@ -106,6 +106,7 @@ Example:
     "Key2": "Localized text 2",
     ...
 }
+```
 
 ## Using in pages and components
 
