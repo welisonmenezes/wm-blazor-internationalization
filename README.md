@@ -10,7 +10,7 @@ This package is an another way to localize text and html blocks in your Blazor W
 - Your translations come from a json file.
 
 ## NuGet Package
-https://www.nuget.org/packages/BlazorUniversalAnalytics/
+https://www.nuget.org/packages/WMBlazorInternationalization/
 
 ## GitHub Repository
 https://github.com/welisonmenezes/wm-blazor-internationalization
