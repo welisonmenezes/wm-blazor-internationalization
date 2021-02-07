@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- <PackageReference Include="WMBlazorInternationalization" Version="1.0.0" /> -->
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WMBlazorInternationalization\WMBlazorInternationalization.csproj" />
   </ItemGroup>
 
