@@ -9,11 +9,14 @@ This package is an another way to localize text and html blocks in your Blazor W
 - It works on both Blazor Server and Blazor WebAssembly.
 - Your translations come from a json file.
 
+
 ## NuGet Package
 https://www.nuget.org/packages/WMBlazorInternationalization/
 
+
 ## GitHub Repository
 https://github.com/welisonmenezes/wm-blazor-internationalization
+
 
 ## Configuration
 
@@ -24,7 +27,7 @@ First, import the namespaces in `_Imports.razor`
 @using WMBlazorInternationalization.WMBI
 ```
 
-Then, add the `WMBInternationalization` component to wrap all the components in your `App.razor`.<br/>
+Then, add the `WMBInternationalization` component to wrap all the components in your `App.razor`.
 You can do it by wrapping the Router component of the aplication.
 Note that the `ChildContent` must wrap the app content, the `ChildLoading` must wrap the content shown when the localization is loading and the `ChildError` must wrap ther error content when the localization is fail. 
 
@@ -51,6 +54,7 @@ Note that the `ChildContent` must wrap the app content, the `ChildLoading` must 
 </WMBInternationalization>
 ```
 
+
 ## Setting up the Component
 
 Inside your main `Startup`/`Program`, call `AddWMBlazorInternationalization`. This will configure the app.
@@ -65,6 +69,7 @@ Blazor Server:
 services.AddWMBlazorInternationalization();
 ```
 
+
 ### Parameters
 
 You can also customize some things by passing parameters
@@ -76,9 +81,10 @@ builder.Services.AddWMBlazorInternationalization(defaultLanguage, fileName, file
 - `defaultLanguage`: The default is `en`, but you can choose anyone or `null`;
 - `fileName`: The default is `Locale`, but you can choose anyone or `null`;
 - `filePath`: The default is `i18ntext/`, but you can choose anyone or `null`;
-- `storageType`: The default is `localStorage`, but you can choose anyone or `null`;
+- `storageType`: The default is `localStorage`, but you can choose `sessionStorage` and `null`. When null the selected language will not be persisted;
 
 When parameters are `null`, the default values will be assumed.
+
 
 ## Setting up the translations
 
@@ -97,6 +103,7 @@ Locale.es.json
 
 Note that `i18next` and `Locale` values can be changed as shown above.
 
+
 ## Create localized text source files as JSON
 
 Example:
@@ -107,6 +114,7 @@ Example:
     ...
 }
 ```
+
 
 ## Using in pages and components
 
@@ -121,6 +129,7 @@ Inside your component, get the WMBInternationalization functionalities by the Ca
 
 Now you has access to 3 methods: `GetTranslation`, `SetLanguage` and `GetCurrentLang`.
 
+
 ## GetTranslation
 
 By `GetTranslation` you can read any key property from the json file regarding current language.
@@ -132,6 +141,7 @@ Example:
 
 The param is the json key you want to access from the Locale json file.
 
+
 ## SetLanguage
 
 By `SetLanguage` you can choose another language. 
@@ -142,6 +152,7 @@ WMBI.SetLanguage("pt");
 ```
 
 The param is the language code you want to be used.
+
 
 ## GetCurrentLang
 
@@ -166,5 +177,6 @@ Example:
     <img src="img/brasil.png">
 }
 ```
+
 
 ### For live demo, download it from github and run, either BlazorServerDemo or BlazorWasmDemo project.
