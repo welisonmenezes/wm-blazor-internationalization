@@ -1,12 +1,15 @@
 @page "/counter"
 
-<h1>Counter</h1>
+<h1>@WMBI.GetTranslation("CounterTitle")</h1>
 
-<p>Current count: @currentCount</p>
+<p>@WMBI.GetTranslation("CurrentCount") @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="IncrementCount">@WMBI.GetTranslation("ClickMe")</button>
 
 @code {
+    [CascadingParameter]
+    protected WMBInternationalization WMBI { get; set; }
+
     private int currentCount = 0;
 
     private void IncrementCount()

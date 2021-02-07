@@ -1,23 +1,23 @@
 ﻿@page "/fetchdata"
 @inject HttpClient Http
 
-<h1>Weather forecast</h1>
+<h1>@WMBI.GetTranslation("FetchDataTitle")</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>@WMBI.GetTranslation("FetchDataDesc")</p>
 
 @if (forecasts == null)
 {
-    <p><em>Loading...</em></p>
+    <p><em>@WMBI.GetTranslation("FetchDataLoading")</em></p>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th>@WMBI.GetTranslation("Date")</th>
+                <th>@WMBI.GetTranslation("Temperature") (C)</th>
+                <th>@WMBI.GetTranslation("Temperature") (F)</th>
+                <th>@WMBI.GetTranslation("Summary")</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +35,9 @@ else
 }
 
 @code {
+    [CascadingParameter]
+    protected WMBInternationalization WMBI { get; set; }
+
     private WeatherForecast[] forecasts;
 
     protected override async Task OnInitializedAsync()

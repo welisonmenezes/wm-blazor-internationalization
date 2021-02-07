@@ -6,8 +6,14 @@
     </div>
 
     <div class="main">
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <div class="top-row px-4 d-flex justify-content-between">
+            <div>
+                <select class="form-control" @onchange="ChangeLanguage">
+                    <option value="en" selected="@SelectedLanguage("en")">@WMBI.GetTranslation("English")</option>
+                    <option value="pt" selected="@SelectedLanguage("pt")">@WMBI.GetTranslation("Portuguese")</option>
+                </select>
+            </div>
+            <a href="http://blazor.net" target="_blank" class="ml-md-auto">@WMBI.GetTranslation("About")</a>
         </div>
 
         <div class="content px-4">
@@ -15,3 +21,19 @@
         </div>
     </div>
 </div>
+
+@code {
+    [CascadingParameter]
+    protected WMBInternationalization WMBI { get; set; }
+
+    private bool SelectedLanguage(string lang)
+    {
+        return (WMBI.GetCurrentLang() == lang) ;
+    }
+
+    private void ChangeLanguage(ChangeEventArgs e)
+    {
+        string selectedString = e.Value.ToString();
+        WMBI.SetLanguage(selectedString);
+    }
+}

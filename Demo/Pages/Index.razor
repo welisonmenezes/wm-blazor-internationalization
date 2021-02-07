@@ -1,42 +1,30 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>@WMBI.GetTranslation("HelloWorld")</h1>
 
-Welcome to your new app.
+<p>@WMBI.GetTranslation("Wellcome")</p>
 
-<br>
-<button class="btn btn-primary" @onclick="@(e => SetNewLang())">Toggle Language</button>
-<br>
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<hr>
 
-<h4>@WMBI.GetTranslation("Language") - @WMBI.GetCurrentLang();</h4>
+<h4>@WMBI.GetTranslation("Language")</h4>
+<h5>@WMBI.GetTranslation("CurrentLang") <code>@WMBI.GetCurrentLang()</code></h5>
 
-<p>Current count: @currentCount</p>
+<hr>
+<h2>@WMBI.GetTranslation("ExampleTitle")</h2>
 
-<Component1></Component1>
+@if(@WMBI.GetCurrentLang() == "en")
+{
+    <img src="img/reino-unido.png">
+}
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@if(@WMBI.GetCurrentLang() == "pt")
+{
+    <img src="img/brasil.png">
+}
+
+<SurveyPrompt Title="@WMBI.GetTranslation("PromptTitle")" />
 
 @code {
     [CascadingParameter]
     protected WMBInternationalization WMBI { get; set; }
-
-    private string lang;
-    private int currentCount = 0;
-
-    protected override void OnInitialized()
-    {
-        lang = WMBI.GetCurrentLang();
-    }
-
-    public void SetNewLang()
-    {
-        lang = (lang == "en") ? "pt" : "en";
-        WMBI.SetLanguage(lang);
-    }
-
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
 }

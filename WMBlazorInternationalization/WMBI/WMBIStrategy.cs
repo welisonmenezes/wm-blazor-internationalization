@@ -88,13 +88,13 @@ public sealed class WMBIStrategy : IWMBI
 
     private async Task PersistLanguage()
     {
-        var module = await Module;
+        var module = await this.Module;
         await module.InvokeAsync<string>("WMBISetCurrentLanguage", this.currentLang, this.storageType);
     }
 
     private async Task<string> GetPersistedLanguage()
     {
-        var module = await Module;
+        var module = await this.Module;
         return await module.InvokeAsync<string>("WMBIGetCurrentLanguage", this.storageType);
     }
 
@@ -110,12 +110,15 @@ public sealed class WMBIStrategy : IWMBI
 
     public string GetTranslation(string key)
     {
-        string value;
-        if (translations.TryGetValue(key, out value))
+        try 
         {
-            return value;
+            return this.translations[key];
         }
-        return null;
+        catch (Exception e)
+        {
+            System.Console.WriteLine(e.Message);
+            return e.Message;
+        }
     }
 
     public void SetCallback(Action callback)
