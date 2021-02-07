@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 
-public sealed class WMBIStrategy: IWMBI
+public sealed class WMBIStrategy : IWMBI
 {
     private readonly IJSRuntime jsRuntime;
     private readonly HttpClient httpClient;
@@ -19,69 +19,97 @@ public sealed class WMBIStrategy: IWMBI
     private string currentLang;
     private string fileName;
     private string filePath;
+    private string storageType;
 
     private Task<IJSObjectReference> _module;
     private Task<IJSObjectReference> Module => _module ??= jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/WMBlazorInternationalization/wm-blazor.interntationalization.js").AsTask();
-
 
     public WMBIStrategy(IJSRuntime jsRuntime, HttpClient httpClient)
     {
         this.jsRuntime = jsRuntime;
         this.httpClient = httpClient;
         this.translations = new Dictionary<string, string>();
-        System.Console.WriteLine("WMBIStrategy");
     }
 
     public async void Configure(
         string defaultLanguage,
         string defaultFileName,
-        string defaultFilePath)
+        string defaultFilePath,
+        string defaultStorageType)
     {
-        System.Console.WriteLine("Configure Start");
+        this.currentLang = defaultLanguage;
         this.fileName = defaultFileName;
         this.filePath = defaultFilePath;
-
-        // set the default language (checks out the browser storage first)
-        string persistedLang = await GetPersistedLanguage();
-        string theLang = (!String.IsNullOrEmpty(persistedLang)) ? persistedLang : defaultLanguage;
-        await SetLanguage(theLang);
-
-        System.Console.WriteLine("Configure End");
+        this.storageType = defaultStorageType;
+        await StartDefaultLanguage();
     }
 
     private async Task<Dictionary<string, string>> SetLanguageDicitonary()
     {
         this.isLoaded = false;
         this.hasError = false;
-        var httpRes = await this.httpClient.GetAsync(
-            $"{this.httpClient.BaseAddress}{this.filePath}{this.fileName}.{this.currentLang}.json"
-        );
-        if (httpRes.StatusCode != HttpStatusCode.NotFound) 
+        var httpRes = await this.httpClient.GetAsync($"{this.httpClient.BaseAddress}{this.filePath}{this.fileName}.{this.currentLang}.json");
+        if (httpRes.StatusCode != HttpStatusCode.NotFound)
         {
             var contentBytes = await httpRes.Content.ReadAsByteArrayAsync();
             this.translations = JsonSerializer.Deserialize<Dictionary<string, string>>(contentBytes);
-            System.Console.WriteLine("SetLanguageDicitonary");
             this.isLoaded = true;
             this.RunCallback();
             return this.translations;
         }
-        this.isLoaded = true;
-        this.hasError = true;
-        this.RunCallback();
-        return this.translations;
+        else
+        {
+            this.isLoaded = true;
+            this.hasError = true;
+            this.RunCallback();
+            return this.translations;
+        }
+    }
+
+    private async Task StartDefaultLanguage()
+    {
+        string theLang;
+        if (!String.IsNullOrEmpty(this.storageType))
+        {
+            string persistedLang = await GetPersistedLanguage();
+            theLang = (!String.IsNullOrEmpty(persistedLang)) ? persistedLang : this.currentLang;
+        }
+        else
+        {
+            theLang = this.currentLang;
+        }
+        await SetLanguage(theLang);
+    }
+
+    private void RunCallback()
+    {
+        this.callback();
+    }
+
+    private async Task PersistLanguage()
+    {
+        var module = await Module;
+        await module.InvokeAsync<string>("WMBISetCurrentLanguage", this.currentLang, this.storageType);
+    }
+
+    private async Task<string> GetPersistedLanguage()
+    {
+        var module = await Module;
+        return await module.InvokeAsync<string>("WMBIGetCurrentLanguage", this.storageType);
     }
 
     public async Task SetLanguage(string lang)
     {
-        System.Console.WriteLine("SetLanguage: " + lang);
         this.currentLang = lang;
-        await PersistLanguage();
+        if (!String.IsNullOrEmpty(this.storageType))
+        {
+            await PersistLanguage();
+        }
         await SetLanguageDicitonary();
     }
 
     public string GetTranslation(string key)
     {
-        System.Console.WriteLine("GetTranslation");
         string value;
         if (translations.TryGetValue(key, out value))
         {
@@ -90,27 +118,8 @@ public sealed class WMBIStrategy: IWMBI
         return null;
     }
 
-    private void RunCallback()
-    {
-        System.Console.WriteLine("RunCallback");
-        this.callback();
-    }
-
-    public async Task PersistLanguage()
-    {
-        var module = await Module;
-        await module.InvokeAsync<string>("WMBISetCurrentLanguage", this.currentLang);
-    }
-
-    public async Task<string> GetPersistedLanguage()
-    {
-        var module = await Module;
-        return await module.InvokeAsync<string>("WMBIGetCurrentLanguage");
-    }
-
     public void SetCallback(Action callback)
     {
-        System.Console.WriteLine("SetCallback");
         this.callback = callback;
     }
 
