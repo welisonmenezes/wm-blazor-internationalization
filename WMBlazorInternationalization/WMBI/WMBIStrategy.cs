@@ -20,6 +20,10 @@ public sealed class WMBIStrategy: IWMBI
     private string fileName;
     private string filePath;
 
+    private Task<IJSObjectReference> _module;
+    private Task<IJSObjectReference> Module => _module ??= jsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/WMBlazorInternationalization/wm-blazor.interntationalization.js").AsTask();
+
+
     public WMBIStrategy(IJSRuntime jsRuntime, HttpClient httpClient)
     {
         this.jsRuntime = jsRuntime;
@@ -36,7 +40,12 @@ public sealed class WMBIStrategy: IWMBI
         System.Console.WriteLine("Configure Start");
         this.fileName = defaultFileName;
         this.filePath = defaultFilePath;
-        await SetLanguage(defaultLanguage);
+
+        // set the default language (checks out the browser storage first)
+        string persistedLang = await GetPersistedLanguage();
+        string theLang = (!String.IsNullOrEmpty(persistedLang)) ? persistedLang : defaultLanguage;
+        await SetLanguage(theLang);
+
         System.Console.WriteLine("Configure End");
     }
 
@@ -66,6 +75,7 @@ public sealed class WMBIStrategy: IWMBI
     {
         System.Console.WriteLine("SetLanguage: " + lang);
         this.currentLang = lang;
+        await PersistLanguage();
         await SetLanguageDicitonary();
     }
 
@@ -84,6 +94,18 @@ public sealed class WMBIStrategy: IWMBI
     {
         System.Console.WriteLine("RunCallback");
         this.callback();
+    }
+
+    public async Task PersistLanguage()
+    {
+        var module = await Module;
+        await module.InvokeAsync<string>("WMBISetCurrentLanguage", this.currentLang);
+    }
+
+    public async Task<string> GetPersistedLanguage()
+    {
+        var module = await Module;
+        return await module.InvokeAsync<string>("WMBIGetCurrentLanguage");
     }
 
     public void SetCallback(Action callback)
