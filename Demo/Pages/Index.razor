@@ -1,0 +1,42 @@
+﻿@page "/"
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<br>
+<button class="btn btn-primary" @onclick="@(e => SetNewLang())">Toggle Language</button>
+<br>
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<h4>@WMBI.GetTranslation("Language") - @WMBI.GetCurrentLang();</h4>
+
+<p>Current count: @currentCount</p>
+
+<Component1></Component1>
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+    [CascadingParameter]
+    protected WMBInternationalization WMBI { get; set; }
+
+    private string lang;
+    private int currentCount = 0;
+
+    protected override void OnInitialized()
+    {
+        lang = WMBI.GetCurrentLang();
+    }
+
+    public void SetNewLang()
+    {
+        lang = (lang == "en") ? "pt" : "en";
+        WMBI.SetLanguage(lang);
+    }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

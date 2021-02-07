@@ -1,0 +1,58 @@
+<CascadingValue Value=this>
+    @if (! hasError)
+    {
+        @if (isLoaded)
+        {
+            <div class="wmbi-loaded">@ChildContent</div>
+        }
+        else
+        {
+            <div class="wmbi-loading">@ChildLoading</div>
+        }
+    }
+    else
+    {
+        <div class="wmbi-error">@ChildError</div>
+    }
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildLoading { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildError { get; set; }
+
+    [Inject]
+    protected IWMBI TheWMBI { get; set; }
+    
+    protected bool isLoaded = false;
+    protected bool hasError = false;
+
+    protected override void OnInitialized()
+    {
+        TheWMBI.SetCallback(() => {
+            isLoaded = TheWMBI.IsLoaded();
+            hasError = TheWMBI.HasError();
+            StateHasChanged();
+        });
+    }
+
+    public string GetTranslation(string key)
+    {
+        return TheWMBI.GetTranslation(key);
+    }
+
+    public void SetLanguage(string key)
+    {
+        TheWMBI.SetLanguage(key);
+    }
+
+    public string GetCurrentLang()
+    {
+        return TheWMBI.GetCurrentLang();
+    }
+}
