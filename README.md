@@ -130,6 +130,8 @@ Example:
 <h1>@WMBI.GetTranslation("HelloWorld")</h1>
 ```
 
+The param is the json key you want to access from the Locale json file.
+
 ## SetLanguage
 
 By `SetLanguage` you can choose another language. 
@@ -138,6 +140,8 @@ Example:
 ```
 WMBI.SetLanguage("pt");
 ```
+
+The param is the language code you want to be used.
 
 ## GetCurrentLang
 
