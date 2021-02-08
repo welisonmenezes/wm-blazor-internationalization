@@ -16,6 +16,8 @@
     }
 </CascadingValue>
 
+@using Microsoft.JSInterop
+
 @code {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
@@ -26,19 +28,33 @@
     [Parameter]
     public RenderFragment ChildError { get; set; }
 
+    [Parameter] 
+    public string defaultLanguage { get; set; } = "en";
+
+    [Parameter] 
+    public string defaultFileName { get; set; } = "Locale";
+
+    [Parameter] 
+    public string defaultFilePath { get; set; } = "i18ntext/";
+
+    [Parameter] 
+    public string storageType { get; set; } = "localStorage";
+
     [Inject]
-    protected IWMBI TheWMBI { get; set; }
+    protected IJSRuntime jsRuntime { get; set; }
 
     [Inject]
     NavigationManager MyNavigationManager { get; set; }
     
+    protected IWMBI TheWMBI;
     protected bool isLoaded = false;
     protected bool hasError = false;
 
     protected override void OnInitialized()
     {
+        TheWMBI = new WMBIStrategy(jsRuntime);
+        TheWMBI.Configure(defaultLanguage, defaultFileName, defaultFilePath, storageType);
         TheWMBI.Start(MyNavigationManager.BaseUri);
-
         TheWMBI.SetCallback(() => {
             isLoaded = TheWMBI.IsLoaded();
             hasError = TheWMBI.HasError();
