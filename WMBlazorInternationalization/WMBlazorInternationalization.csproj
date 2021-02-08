@@ -4,12 +4,13 @@
     <TargetFramework>net5.0</TargetFramework>
     <Authors>Welison Menezes</Authors>
     <Description>This package is an another way to localize text and html blocks in your Blazor Web App!
-(internationalization, localization, translation, ...)</Description>
+(internationalization, localization, translation, ...). Dotnet 5.</Description>
     <Copyright>MIT</Copyright>
     <PackageProjectUrl>https://github.com/welisonmenezes/wm-blazor-internationalization</PackageProjectUrl>
     <RepositoryUrl>https://github.com/welisonmenezes/wm-blazor-internationalization</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
-    <PackageTags>Blazor Internationalization, Localize, Localization, Translation, Blazor Localization, Internationalization, Blaozr Translation</PackageTags>
+    <PackageTags>i18n, Blazor, BlazorWasm, BlazorServer, WebAssembly, Localize, Localization, Translation, Internationalization, BlazorLocalization, BlazorTranslation, BlazorLocalize, BlazorInternationalization</PackageTags>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   
