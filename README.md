@@ -5,7 +5,7 @@
 This package is an another way to localize text and html blocks in your Blazor Web App!
 (internationalization, localization, translation, ...)
 
-- Version: 5.0
+- Dotnet Version: 5.0
 - It works on both Blazor Server and Blazor WebAssembly.
 - Your translations come from a json file.
 
@@ -29,6 +29,7 @@ First, import the namespaces in `_Imports.razor`
 
 Then, add the `WMBInternationalization` component to wrap all the components in your `App.razor`.
 You can do it by wrapping the Router component of the aplication.
+
 Note that the `ChildContent` must wrap the app content, the `ChildLoading` must wrap the content shown when the localization is loading and the `ChildError` must wrap ther error content when the localization is fail. 
 
 ```
@@ -54,28 +55,32 @@ Note that the `ChildContent` must wrap the app content, the `ChildLoading` must 
 </WMBInternationalization>
 ```
 
-
-## Setting up the Component
-
-Inside your main `Startup`/`Program`, call `AddWMBlazorInternationalization`. This will configure the app.
-
-Blazor Wasm:
-```
-builder.Services.AddWMBlazorInternationalization();
-```
-
-Blazor Server:
-```
-services.AddWMBlazorInternationalization();
-```
-
-
 ### Parameters
 
 You can also customize some things by passing parameters
 
+Example:
 ```
-builder.Services.AddWMBlazorInternationalization(defaultLanguage, fileName, filePath, storageType);
+<WMBInternationalization defaultLanguage="pt" defaultFileName="Locale" defaultFilePath="i18ntext/" storageType="sessionStorage">
+    <ChildContent>
+        <Router AppAssembly="@typeof(Program).Assembly">
+            <Found Context="routeData">
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+            </Found>
+            <NotFound>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p>Sorry, there's nothing at this address.</p>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </ChildContent>
+    <ChildLoading>
+        <p>Loading your localization data.</p>
+    </ChildLoading>
+    <ChildError>
+        <p>An error was occurred while loading your localization.</p>
+    </ChildError>
+</WMBInternationalization>
 ```
 
 - `defaultLanguage`: The default is `en`, but you can choose anyone or `null`;
@@ -84,7 +89,6 @@ builder.Services.AddWMBlazorInternationalization(defaultLanguage, fileName, file
 - `storageType`: The default is `localStorage`, but you can choose `sessionStorage` and `null`. When null the selected language will not be persisted;
 
 When parameters are `null`, the default values will be assumed.
-
 
 ## Setting up the translations
 
