@@ -1,0 +1,5 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="/" Path="C:\xampp\htdocs\www\welison\blazor\wm-blazor-internationalization\BlazorWasmDemo\bin\Release\net5.0\wwwroot\" />
+  <ContentRoot BasePath="/" Path="C:\xampp\htdocs\www\welison\blazor\wm-blazor-internationalization\BlazorWasmDemo\obj\Release\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="_content/WMBlazorInternationalization" Path="C:\xampp\htdocs\www\welison\blazor\wm-blazor-internationalization\WMBlazorInternationalization\wwwroot\" />
+</StaticWebAssets>
