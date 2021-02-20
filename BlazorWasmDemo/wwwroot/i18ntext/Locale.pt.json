@@ -1,7 +1,7 @@
 {
     "Language": "Português",
-    "HelloWorld": "Olá mundo!",
-    "Wellcome": "Bem vindo ao seu novo aplicativo.",
+    "Title": "WM Blazor Internationalization.",
+    "Description": "Localize textos e blocos html em seu aplicativo Blazor Wasm ou aplicativo Blazor Server! (Blazor localization, Blazor translation, Blazor i18n...)",
     "CurrentLang": "Código do idoma corrente:",
     "ExampleTitle": "Exemplo usando GetCurrentLang:",
     "PromptTitle": "Como o Blazor está funcionando para você?",
@@ -20,7 +20,7 @@
     "About": "Sobre",
     "English": "Inglês",
     "Portuguese": "Português",
-    "AppTitle": "Demonstração",
+    "AppTitle": "Blazor Internationalization",
     "Home": "Ínicio",
     "Counter": "Contador",
     "FetchData": "Obter dados"
